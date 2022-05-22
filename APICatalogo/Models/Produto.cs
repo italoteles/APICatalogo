@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace APICatalogo.Models;
 public class Produto
@@ -21,6 +22,8 @@ public class Produto
     public float Estoque { get; set; }
     public DateTime DataCadastro { get; set; }
     public int CategoriaId { get; set; }
+    //JsonIgnore faz com que propriedades de navegação não sejam exibidas na serialiação do json no POST e PUT
+    [JsonIgnore]
     public Categoria? Categoria { get; set; }
 
 
