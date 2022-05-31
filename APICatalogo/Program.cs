@@ -3,6 +3,7 @@ using APICatalogo.DTOs.Mappings;
 using APICatalogo.Filters;
 using APICatalogo.Repository;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -23,6 +24,8 @@ string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConne
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //adicionando os mappings na API
@@ -32,6 +35,9 @@ var mappingConfig = new MapperConfiguration(mappingConfig =>
 });
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
+
+
 
 var app = builder.Build();
 
@@ -43,6 +49,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//middleware para autentifcação
+app.UseAuthentication();
 
 app.UseAuthorization();
 
