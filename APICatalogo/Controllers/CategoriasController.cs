@@ -22,8 +22,7 @@ namespace APICatalogo.Controllers
         {
             try
             {
-                //linha para simular o lançamento de um erro
-                //throw new DataMisalignedException();
+              
                 var categorias = _context.Categorias.Include(p => p.Produtos).ToList();
                 if (categorias is null)
                 {
