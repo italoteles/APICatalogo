@@ -1,5 +1,7 @@
 ﻿
 
+using System.Text.Json.Serialization;
+
 namespace APICatalogo.DTOs
 {
     public class CategoriaDTO
