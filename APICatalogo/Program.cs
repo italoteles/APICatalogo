@@ -5,6 +5,7 @@ using APICatalogo.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -20,10 +21,28 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
+
+//inserindo biblioteca de versões 
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+    options.UseApiBehavior = true;
+    //habilitando essa opção é necessário passar no header da requisição a versão da API
+    // options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+});
+
+
+
 //habilitando o swagger para aceitar o token no header
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCatalogo", Version = "v1" });
+
+    //resolvendo conflitos de versões no swagger
+    c.ResolveConflictingActions(c => c.First());
+
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {

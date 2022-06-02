@@ -12,8 +12,9 @@ using System.Text.Json;
 
 namespace APICatalogo.Controllers
 {
+    [ApiVersion("1.0")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/ [controller]")]
     [ApiController]
     public class CategoriasController : ControllerBase
     {
